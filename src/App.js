@@ -23,14 +23,12 @@ const App = () => {
 
   return (
     <>
-    <Navigation/>
-
+    
     <BrowserRouter>
       <Route path="/" component={Posts} exact/>
       <Route path="/login" component={LoginForm} />
       <Route path="/register" component={RegisterForm} />
     </BrowserRouter>
-
     </>
   );
 }

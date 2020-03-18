@@ -23,7 +23,6 @@ const LoginForm = () => {
       headers: { "content-type" : "application/json" },
       body : JSON.stringify(loginInformation)
     })
-    .then(res => res.json())
     .then(data => handleLogin(data))
   }
 
@@ -31,7 +30,7 @@ const LoginForm = () => {
 
     if(data.status == 200){
 
-      sessionStorage.setItem('syntaxSession', data.token);
+
     }
 
     else{
