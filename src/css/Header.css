@@ -1,0 +1,54 @@
+.header{
+    margin: 0 0 0 0;
+    height: 10%;
+    padding: 0 1% 0 1%;
+    border-bottom: 1px solid ;
+    display: flex;
+    background-color:#0B0C10;
+}
+
+.headerItem{
+    margin: 1em 2em;
+    width: 20%;
+    display: inline-flex;
+}
+
+.headerItem > a{
+    text-decoration: none;
+    color: white;
+}
+
+.headerItem > a:hover{
+        
+    background-color: #66FCF1;
+    border: 1px solid black;
+    color: black;
+}
+
+.headerItem > a{
+    padding: 5% 0 5% 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 1px solid #66FCF1;
+    text-align: center;    
+}
+
+body{
+    padding: 0;
+    margin: 0;
+}
+
+#loggedInAs{
+    color: #66FCF1;
+}
+
+#rightSideWidgets{
+    width: 50%;
+    text-align: right;
+}
+
+#leftSideWidgets{
+    width: 50%;    
+}
+

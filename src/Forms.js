@@ -1,7 +1,11 @@
 import React, {useState} from 'react'
+import { Cookies, useCookies } from 'react-cookie';
+import './css/Forms.css';
 
 //class LoginForm extends React.Component {
 const LoginForm = () => {
+
+  const [cookie, setCookie] = useCookies(["Syntax-Session"]);
 
   // Username and password
   const [username, setUsername] = useState("");
@@ -9,44 +13,39 @@ const LoginForm = () => {
 
   const onSubmit = (event) => {
 
-  event.preventDefault();
-
-    const loginInformation = {
-
-      username: username,
-      password: password
-    }
-
-    fetch("http://localhost:5000/login", {
+    fetch("http://localhost:5000/api/user/login", {
 
       method: "POST",
-      headers: { "content-type" : "application/json" },
-      body : JSON.stringify(loginInformation)
+      headers: {"content-type": "application/json"},
+      body : JSON.stringify({username: username, password: password})
     })
-    .then(data => handleLogin(data))
+    .then(res => handleLogin(res))
   }
 
   const handleLogin = (data) => {
 
-    if(data.status == 200){
+    if(data.status === 200){
 
-
-    }
-
-    else{
-      console.log(data);
+      data.json()
+        .then(data => data["session-token"])
+        .then(cookie => setCookie("Syntax-Session", cookie))      
     }
   }
 
   return(
-    <form onSubmit={onSubmit}>
-      <p>Username</p>
-      <input type="text" name="username" value={username} onChange={e => setUsername(e.target.value)}/>
+    <form onSubmit={onSubmit} className={"authenticationForm"}>
 
-      <p>Password</p>
-      <input type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
+      <div className={"formSection"}>
+        <h4>Username</h4>
+        <input type="text" name="username" value={username} onChange={e => setUsername(e.target.value)}/>
+      </div>
 
-      <input type="submit" value="Login"/>
+      <div className={"formSection"}>
+        <h4>Password</h4>
+        <input type="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
+      </div>
+
+      <button type="submit">Login</button>
     </form>
   );
 }
@@ -65,13 +64,13 @@ const RegisterForm = () => {
 
     const registerInformation = {
 
-      username: this.state.username,
-      password: this.state.password,
-      email: this.state.email,
-      message: this.state.message
+      username: username,
+      password: password,
+      email: email,
+      message: message
     }
 
-    fetch("http://localhost:5000/register", {
+    fetch("http://localhost:5000/api/user/register", {
 
       method: "POST",
       headers: {"content-type": "application/json"},
@@ -83,7 +82,7 @@ const RegisterForm = () => {
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className={"authenticationForm"}>
       <p>Username</p>
       <input type="text" name="username" value={username} onChange={e => setUserName(e.target.value)} />
 
@@ -98,6 +97,47 @@ const RegisterForm = () => {
   );
 }
 
+const PostCreationForm = () => {
 
+  const [postTitle, setPostTItle] = useState("");
+  const [postContent, setPostContent] = useState("");
+  const [cookies] = useCookies(["Syntax-Session"]);
 
-export { LoginForm, RegisterForm };
+  const CreatedPost = {
+    
+    cookie: cookies["Syntax-Session"],
+    title : postTitle,
+    content : postContent
+  }
+
+  const onSubmit = (event) => {
+
+    event.preventDefault();
+
+    fetch("http://localhost:5000/api/posts/createPost", {
+
+      method: "POST",
+      headers: {"content-type": "application/json"},
+      body: JSON.stringify(CreatedPost)
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+  }
+
+  return(
+
+    <form onSubmit={onSubmit} className={"postForm"}>
+      <div className={"formSection"}>
+        <h4>Post title</h4>
+        <input type="text" name="postTitle" value={postTitle} onChange={e => setPostTItle(e.target.value)}/>
+      </div>
+      <div className={"formSection"}>
+        <h4>Post content</h4>
+        <textarea type="text" name="postContent" value={postContent} onChange={e => setPostContent(e.target.value)}></textarea>
+      </div>
+      <button type="submit">Post</button>
+    </form>
+  );
+}
+
+export { LoginForm, RegisterForm, PostCreationForm };
