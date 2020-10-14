@@ -4,6 +4,7 @@ import'./css/Posts.css';
 class Posts extends Component
 {
   constructor(props){
+
     super(props);
     this.state = {
       posts: [],
@@ -30,7 +31,7 @@ class Posts extends Component
 
       this.setState({postsItems: this.state.posts.map(post => (
 
-          <Post key={post.postID} postTitle={post.postTitle} postContent={post.postContent}/>
+          <Post key={post.postID} postTitle={post.postTitle} postContent={post.postContent} postId={post.postID}/>
         ))
       });
     }
@@ -46,15 +47,17 @@ class Posts extends Component
   }
 } export default Posts;
 
-class Post extends Component{
+const Post = (props) =>{
 
-  render(){
+  const openPost = () => {
 
-    return(
-      <div class="Post">
-        <h2 class={"PostTitle"}>{this.props.postTitle}</h2>
-        <p class={"PostContent"}>{this.props.postContent}</p>
-      </div>
-    );
+    console.log(props.postID)
   }
+
+  return(
+    <div class="Post" onClick={openPost}>
+      <h2 class={"PostTitle"}>{props.postTitle}</h2>
+      <p class={"PostContent"}>{props.postContent}</p>
+    </div>
+  );  
 };
